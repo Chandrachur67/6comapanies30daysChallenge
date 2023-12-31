@@ -1,0 +1,34 @@
+typedef long long ll;
+
+class Solution {
+private:
+    ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
+
+    bool isPossible(int maxNum, int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2) {
+        int divByDivisor1 = maxNum / divisor1;
+        int divByDivisor2 = maxNum / divisor2;
+        ll lcm = (1ll * divisor1 * divisor2) / gcd(divisor1, divisor2);
+        int divByBoth = maxNum / lcm;
+
+        uniqueCnt1 = max(0, uniqueCnt1 - (divByDivisor2 - divByBoth));
+        uniqueCnt2 = max(0, uniqueCnt2 - (divByDivisor1 - divByBoth));
+        int freeSlots = maxNum - (divByDivisor1 + divByDivisor2 - divByBoth);
+        return freeSlots >= uniqueCnt1 + uniqueCnt2; 
+    }
+
+public:
+    int minimizeSet(int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2) {
+        int res;
+        int start = 0, end = INT_MAX;
+        while(start <= end) {
+            int mid = start + (end - start)/2;
+            if(isPossible(mid, divisor1, divisor2, uniqueCnt1, uniqueCnt2)) {
+                res = mid;
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+        }
+        return res;
+    }
+};
