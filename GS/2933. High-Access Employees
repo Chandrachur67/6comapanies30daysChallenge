@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<string> findHighAccessEmployees(vector<vector<string>>& access_times) {
+        vector<string> high_access_emp;
+        sort(access_times.begin(), access_times.end());
+        unordered_map<string, int> mp;
+        unordered_map<string, vector<int>> diff;
+        for(auto &access_time: access_times) {
+            string emp = access_time[0];
+            int curr_time = stoi(access_time[1], 0, 10);
+            if(mp.find(emp) == mp.end()) {
+                mp[emp] = curr_time;
+            } else {
+                diff[emp].push_back(curr_time - mp[emp]);
+                mp[emp] = curr_time;
+            }   
+        }
+
+        for(auto &it: diff) {
+            string emp = it.first;
+            vector<int> &currDiff = it.second;
+            for(int i = 1; i < currDiff.size(); i++) {
+                if(currDiff[i] + currDiff[i - 1] < 100) {
+                    high_access_emp.push_back(emp);
+                    break;
+                }
+            }
+        }
+        return high_access_emp;
+    }
+};
