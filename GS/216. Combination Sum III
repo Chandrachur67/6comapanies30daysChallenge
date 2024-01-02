@@ -1,0 +1,23 @@
+class Solution {
+private:
+    void getAllCombinations(int num, int k, int target, vector<int> &curr, 
+                            vector<vector<int>> &res) 
+    {
+        if(k == 0 && target == 0) res.push_back(curr);
+        if(k == 0 || num == 10 || target <= 0) return;
+
+        getAllCombinations(num + 1, k, target, curr, res);
+
+        curr.push_back(num);
+        getAllCombinations(num + 1, k - 1, target - num, curr, res);
+        curr.pop_back();
+    }
+
+public:
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<vector<int>> res;
+        vector<int> curr;
+        getAllCombinations(1, k, n, curr, res);
+        return res;
+    }
+};
