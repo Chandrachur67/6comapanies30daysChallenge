@@ -1,0 +1,41 @@
+class Solution {
+    int m, n, total;
+    unordered_map<int, int> mp;
+
+public:
+    Solution(int m, int n) {
+        this->m = m;
+        this->n = n;
+        this->total = m * n;
+        mp.clear();
+    }
+    
+    vector<int> flip() {
+        if(total == 0) return {};
+        int randomNum = rand() % total--;
+
+        int randomInd = (mp.find(randomNum) == mp.end()) 
+            ? randomNum 
+            : mp[randomNum];
+        mp[randomNum] = (mp.find(total) == mp.end()) 
+            ? total
+            : mp[total];
+        mp[total] = randomInd;
+        
+        int row = randomInd / n;
+        int col = randomInd % n;
+        return {row, col};
+    }
+    
+    void reset() {
+        mp.clear();
+        total = m * n;
+    }
+};
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution* obj = new Solution(m, n);
+ * vector<int> param_1 = obj->flip();
+ * obj->reset();
+ */
