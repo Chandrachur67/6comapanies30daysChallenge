@@ -1,0 +1,37 @@
+class Solution{   
+public:
+    string printMinNumberForPattern(string S){
+        int i = 0, n = S.length(), minNum = 1;
+        string res = "";
+        while(i < n) {
+            if(S[i] == 'I') {
+                if(res == "") {
+                    res += "1";
+                    minNum = 2;
+                } 
+                int j = i + 1, count = 0;
+                while(j < n && S[j] == 'D') {count++; j++;}
+                
+                res += to_string(minNum + count);
+                if(count == 0) minNum = minNum + count + 1; 
+                
+                i++;
+            } else {
+                int j = i, count = 0, currCount;
+                while(j < n && S[j] == 'D') {count++; j++;}
+                
+                if(res == "") {
+                    res += to_string(minNum + count);
+                } 
+                currCount = count;
+                while(currCount--) {
+                    res += to_string(minNum + currCount);
+                }
+                minNum = minNum + count + 1;
+                
+                i = j;
+            }
+        }
+        return res;
+    }
+};
