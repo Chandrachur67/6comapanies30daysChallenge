@@ -1,0 +1,73 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Data {
+public:
+    bool isBST;
+    int sum;
+    int minValue;
+    int maxValue;
+
+    Data(bool _isBST, int _sum, int _minValue, int _maxValue) {
+        isBST = _isBST;
+        sum = _sum;
+        minValue = _minValue;
+        maxValue = _maxValue;
+    }
+};
+
+class Solution {
+private:
+    Data dfs(TreeNode* root, int &res) {
+        if(root->left == nullptr && root->right == nullptr) {
+            res = max(res, root->val);
+            return Data(true, root->val, root->val, root->val);
+        }
+
+        int sum = root->val, mini = root->val, maxi = root->val;
+        bool isBST = true;
+        if(root->left != nullptr) {
+            auto [ isLeftBST, leftSum, leftMin, leftMax ] 
+                = dfs(root->left, res);
+            
+            if(isBST && isLeftBST && leftMax < root->val) {
+                sum += leftSum;
+                mini = leftMin;
+            } else {
+                isBST = false;
+            }
+        }
+        if(root->right != nullptr) {
+            auto [ isRightBST, rightSum, rightMin, rightMax ] 
+                = dfs(root->right, res);
+
+            if(isBST && isRightBST && rightMin > root->val) {
+                sum += rightSum;
+                maxi = rightMax;
+            } else {
+                isBST = false;
+            }
+        }
+        
+        if(isBST) {
+            res = max(res, sum);
+            return Data(true, sum, mini, maxi);
+        }
+        return Data(false, 0, 0, 0);
+    }
+
+public:
+    int maxSumBST(TreeNode* root) {
+        int res = 0;
+        dfs(root, res);
+        return res;
+    }
+};
