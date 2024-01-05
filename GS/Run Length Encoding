@@ -1,0 +1,19 @@
+string encode(string src)
+{     
+    string res;
+    char prev = src[0];
+    int count = 0, n = src.length();
+    for(int i = 0; i < n; i++) {
+        if(src[i] == prev) {
+            count++;
+        } else {
+            res += prev;
+            res += to_string(count);
+            count = 1;
+            prev = src[i];
+        }
+    }
+    res += prev;
+    res += to_string(count);
+    return res;
+}  
