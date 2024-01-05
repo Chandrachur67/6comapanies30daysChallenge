@@ -1,0 +1,24 @@
+class Solution {
+private:
+    long long mod = 1e9 + 7;
+
+    long long f(int start, int end, int k, vector<vector<int>> &dp) {
+        if(k == 0) 
+            return (start == end);
+        if(abs(end - start) > k) 
+            return 0;
+        if(dp[start + 1000][k] != -1) 
+            return dp[start + 1000][k];
+
+        return dp[start + 1000][k] = (
+            f(start + 1, end, k - 1, dp) + 
+            f(start - 1, end, k - 1, dp)
+        ) % mod;
+    }
+
+public:
+    int numberOfWays(int startPos, int endPos, int k) {
+        vector<vector<int>> dp(20001, vector<int>(k + 1, -1));
+        return f(startPos, endPos, k, dp);
+    }
+};
